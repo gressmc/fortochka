@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Photos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron text-center">
+        <div th:if="${member} != null">
+            <h1>Ваши фото тут</h1>
+            <h2 th:text="${member.lastName}"></h2>
+        </div>
+        <div th:unless="${member} != null">
+            <h1>Ваши фото</h1>
+        </div>
+    </div>
+    <div class="row text-center">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>code</th>
+                <th>url</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="photo : ${photos}">
+                <th th:text="${photo.id}">Id</th>
+                <th th:text="${photo.code}">Code</th>
+                <th th:text="${photo.url}">Url</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
