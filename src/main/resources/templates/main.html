@@ -4,6 +4,7 @@
     <title>Главная</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href=@{resources/css/main.css}>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -12,10 +13,43 @@
 
 <div class="container">
     <div class="jumbotron text-center">
-        Выберете название детского сада
+        <h1>Выберете детский сад</h1>
+    </div>
+
+    <div class="jumbotron">
+
+        <div th:each="kindergarten : ${kindergartens}">
+            <button class="accordion">
+                <div th:text="${kindergarten.title}" class="text-center">kindergarten</div>
+            </button>
+            <div class="panel">
+                <div th:object="${kindergartens}">
+                    <div th:each="kindergroup : *{kindergroups}">
+                        <a th:href="@{/kindergroup/${kindergroup.title})}">kindergroup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
