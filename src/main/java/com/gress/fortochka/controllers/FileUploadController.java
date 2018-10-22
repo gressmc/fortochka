@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.ArrayUtils;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class FileUploadController {
         this.storageService = storageService;
     }
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
 
         model.addAttribute("files", storageService.loadAll().map(
@@ -36,7 +37,7 @@ public class FileUploadController {
                 .collect(Collectors.toList()));
 
         return "uploadForm";
-    }
+    }*/
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
@@ -47,15 +48,19 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/uploaded")
+    public String handleFileUpload(@RequestParam("files") MultipartFile[] files,
+                                   Model model) {
 
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+        if (!ArrayUtils.isEmpty(files)){
+            for (MultipartFile file: files) {
+                storageService.store(file);
+            }
+        }
+/*        model.addAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");*/
 
-        return "redirect:/";
+        return "backoffice";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

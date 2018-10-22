@@ -40,4 +40,25 @@ public class Member {
         photos.remove(photo);
         photo.setMember(null);
     }
+
+    public void setKindergroup(Kindergroup kindergroup) {
+        if (sameAsKindergroup(kindergroup)){
+            return;
+        }
+        Kindergroup oldKindergroup = this.kindergroup;
+        this.kindergroup = kindergroup;
+
+        if (oldKindergroup != null) {
+            oldKindergroup.removeMember(this);
+        }
+        if (kindergroup != null) {
+            kindergroup.addMember(this);
+        }
+
+        this.kindergroup = kindergroup;
+    }
+
+    private boolean sameAsKindergroup(Kindergroup newKindergroup) {
+        return kindergroup == null ? newKindergroup == null : kindergroup.equals(newKindergroup);
+    }
 }

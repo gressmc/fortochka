@@ -30,4 +30,38 @@ public class Kindergroup {
 
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "kindergroup", targetEntity=Member.class, cascade = CascadeType.ALL)
     private List<Member> members = new ArrayList<>();
+
+    public void addMember(Member member){
+        if (members.contains(member)) {
+            return;
+        }
+        members.add(member);
+        member.setKindergroup(this);
+    }
+
+    public void removeMember(Member member){
+        members.remove(member);
+        member.setKindergroup(null);
+    }
+
+    public void setKindergarten(Kindergarten kindergarten) {
+        if (sameAsKindergarten(kindergarten)){
+            return;
+        }
+        Kindergarten oldKindergarten = this.kindergarten;
+        this.kindergarten = kindergarten;
+
+        if (oldKindergarten != null) {
+            oldKindergarten.removeKindergroup(this);
+        }
+        if (kindergarten != null) {
+            kindergarten.addKindergroup(this);
+        }
+
+        this.kindergarten = kindergarten;
+    }
+
+    private boolean sameAsKindergarten(Kindergarten newKindergarten) {
+        return kindergarten == null ? newKindergarten == null : kindergarten.equals(newKindergarten);
+    }
 }

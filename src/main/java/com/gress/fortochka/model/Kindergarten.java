@@ -23,4 +23,17 @@ public class Kindergarten {
 
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "kindergarten",targetEntity=Kindergroup.class, cascade = CascadeType.ALL)
     private List<Kindergroup> kindergroups = new ArrayList<>();
+
+    public void addKindergroup(Kindergroup kindergarten){
+        if (kindergroups.contains(kindergarten)) {
+            return;
+        }
+        kindergroups.add(kindergarten);
+        kindergarten.setKindergarten(this);
+    }
+
+    public void removeKindergroup(Kindergroup kindergarten){
+        kindergroups.remove(kindergarten);
+        kindergarten.setKindergarten(null);
+    }
 }

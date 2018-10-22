@@ -11,11 +11,10 @@ import com.gress.fortochka.services.PhotoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,6 +56,15 @@ public class MainController {
     public String getGroups(@PathVariable("title") String title, Model model){
         Kindergroup kindergroup = kinderGroupService.getItemByProp(title);
         model.addAttribute("kindergroup", kindergroup);
+        return "kindergroup";
+    }
+
+    @PostMapping("/kindergarten/add")
+    public String addKindergarten(@RequestParam("title") String title,
+                                  @RequestParam("groups") String[] groups,
+                                  Model model){
+        Kindergarten kindergarten = kindergartenService.create(title, groups);
+        model.addAttribute("kindergarten", kindergarten);
         return "kindergroup";
     }
 
